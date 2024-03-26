@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #video-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #video-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #666;
+        }
+
+        footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>American Sign Language Converter</h1>
+
+        <div id="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}" alt="ASL Video Feed">
+        </div>
+
+        <!-- Add button for text-to-speech conversion -->
+        <button id="convert-to-speech">Convert to Speech</button>
+    </div>
+
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // jQuery function to handle button click event
+        $(document).ready(function() {
+            $("#convert-to-speech").click(function() {
+                // Send AJAX request to Flask server
+                $.ajax({
+                    url: "/convert_to_speech",
+                    type: "GET",
+                    success: function(data) {
+                        // Log success message to console
+                        console.log("Text converted to speech:", data);
+                    },
+                    error: function(xhr, status, error) {
+                        // Log error message to console
+                        console.error("Error converting text to speech:", error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
