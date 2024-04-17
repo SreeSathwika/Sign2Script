@@ -20,7 +20,7 @@
         h1 {
             color: #333;
             font-size: 36px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -48,18 +48,37 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .convert-to-speech {
+            background-color: #0077b6;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            position: absolute;
+            right: 700px;
+            top: 650px;
+            cursor: pointer;
+            font-weight: bold;
+            
+        }
+        
+
     </style>
 </head>
 <body>
     <div id="content">
         <h1>American Sign Language Converter</h1>
+        {% if user %}
+        <p>Welcome {{ user[1] }}</p>
+        {% endif %}
+    
 
         <div id="video-container">
             <img id="video-feed" src="{{ url_for('video_feed') }}" alt="ASL Video Feed">
         </div>
 
         <!-- Add button for text-to-speech conversion -->
-        <button id="convert-to-speech">Convert to Speech</button>
+        <button class="convert-to-speech">Convert to Speech</button>
     </div>
 
     <!-- Include jQuery library -->
