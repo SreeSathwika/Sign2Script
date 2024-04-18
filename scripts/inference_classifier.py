@@ -3,7 +3,6 @@ import pickle
 import mediapipe as mp
 import numpy as np
 import tkinter as tk
-from gtts import gTTS
 import os
 from .labels_dict import labels_dict
 
