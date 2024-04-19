@@ -55,11 +55,11 @@
         </nav>   
         <div class="name2"> A Sign Language Interpreter</div>
         <section class="services">
-            <div class="service">
+            <a href="{% url 'learn' %}" class="service">
                 <div class="icon2"><img src="{% static 'img2.png' %}" alt="img2" style="width:80%"></div>
                 <h3>Learning</h3>
                 <p>Learn American Sign Language</p>
-            </div>
+            </a>
             <a href="{% url 'interpreter' %}" class="service">
                 <div class="icon1"><img src="{% static 'img1.png' %}" alt="img1" style="width:100%"></div>
                 <h3>Interpreter</h3>
