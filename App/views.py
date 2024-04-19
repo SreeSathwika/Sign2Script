@@ -71,11 +71,11 @@ def register(request):
 
 def home(request):
     if request.user.is_authenticated:
-     user = request.user
-     context = {
-        'user': user
-     }
-     return render(request, 'home.html',context)
+        user = request.user
+        context = {
+            'user': user
+        }
+        return render(request, 'home.html',context)
     else:
        return redirect('login')
     
@@ -96,6 +96,9 @@ def view_profile(request):
 
     # Render the profile.html template with the profile data
     return render(request, 'profile.html', {'profile_data': profile_data})
+
+def learn(request):
+    return render(request, 'learn.html')
 
     
 def text_to_speech(text):
