@@ -1,14 +1,90 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import StreamingHttpResponse
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate,login ,logout
+from django.db import IntegrityError
+from django.contrib.auth import login as auth_login  # Rename to avoid conflicts
 from scripts.inference_classifier import GestureClassifier
+from . forms import CreateUserForm, LoginForm
+from django.contrib.sessions.models import Session
+from django.contrib.sessions.backends.db import SessionStore
 import cv2
 import pyttsx3
+from django.contrib.messages import get_messages
 
 gesture_classifier = GestureClassifier()
 camera = cv2.VideoCapture(0)
 
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            request.session['user_id'] = user.id
+            return redirect('index')
+        else:
+            messages.error(request, "Invalid Credentials!")
+
+    # Pass the messages to the template
+    stored_messages = get_messages(request)
+    return render(request, 'login.html', {'messages': stored_messages})
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirmPassword = request.POST.get('confirmPassword')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists! Please try another username.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered! Please use another email.")
+        elif len(username) > 15:
+            messages.error(request, "Username should be less than or equal to 15 characters.")
+        elif password != confirmPassword:
+            messages.error(request, 'Passwords do not match!')
+        elif not username.isalnum():
+            messages.error(request, "Username must be alphanumeric.")
+        else:
+            try:
+                myuser = User.objects.create_user(username, email, password)
+                myuser.save()
+
+                # Automatically log in the user after successful registration
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    auth_login(request, user)
+                    request.session['user_id'] = user.id
+
+                return redirect('index')
+            except IntegrityError:
+                messages.error(request, "An error occurred during registration. Please try again later.")
+
+    stored_messages = get_messages(request)
+    return render(request, 'login.html', {'messages': stored_messages})
+
+
+
+
+
 def index(request):
-    return render(request, 'index.html')\
+    if request.user.is_authenticated:
+     user = request.user
+     context = {
+        'user': user
+     }
+     return render(request, 'index.html',context)
+    else:
+       return redirect('login')
+   
     
 def text_to_speech(text):
     # Initialize the Text-to-Speech engine
