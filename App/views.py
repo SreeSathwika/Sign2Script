@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login ,logout
 from django.db import IntegrityError
 from django.contrib.auth import login as auth_login  # Rename to avoid conflicts
+from django.contrib.auth.decorators import login_required
 from scripts.inference_classifier import GestureClassifier
 from . forms import CreateUserForm, LoginForm
 from django.contrib.sessions.models import Session
@@ -27,15 +28,14 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            request.session['user_id'] = user.id
-            return redirect('index')
+            return redirect('home')
         else:
             messages.error(request, "Invalid Credentials!")
 
     # Pass the messages to the template
     stored_messages = get_messages(request)
     return render(request, 'login.html', {'messages': stored_messages})
-
+ 
 def register(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -62,29 +62,41 @@ def register(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     auth_login(request, user)
-                    request.session['user_id'] = user.id
-
-                return redirect('index')
+                    return redirect('home')
             except IntegrityError:
                 messages.error(request, "An error occurred during registration. Please try again later.")
 
     stored_messages = get_messages(request)
     return render(request, 'login.html', {'messages': stored_messages})
 
-
-
-
-
-def index(request):
+def home(request):
     if request.user.is_authenticated:
      user = request.user
      context = {
         'user': user
      }
-     return render(request, 'index.html',context)
+     return render(request, 'home.html',context)
     else:
        return redirect('login')
+    
+def logout_user(request):
+    logout(request)
+    request.session.flush()  # Clear session data
+    return redirect('login')
    
+@login_required
+def view_profile(request):
+    # Get the current user
+    user = request.user
+    # Assuming you have additional profile data associated with the user
+    profile_data = {
+        'username': user.username,
+        'email': user.email,
+    }
+
+    # Render the profile.html template with the profile data
+    return render(request, 'profile.html', {'profile_data': profile_data})
+
     
 def text_to_speech(text):
     # Initialize the Text-to-Speech engine
@@ -122,7 +134,11 @@ def generate_frames():
         )
 
 def video_feed(request):
-    return StreamingHttpResponse(
-        generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame"
-    )
-
+    if request.user.is_authenticated and request.path == '/interpreter/':
+        # If the user is logged in and in the interpreter view, return the video feed
+        return StreamingHttpResponse(
+            generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame"
+        )
+    else:
+        # If the user is not in the interpreter view or not logged in, redirect to the home page or any other page
+        return redirect('home')  # Redirect to home page or any other page

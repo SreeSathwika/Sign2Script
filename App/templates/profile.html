@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="{% static 'profile.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+  <div class="container">
+    <img src="images/user.png" alt="">
+    <h2>My Profile</h2>
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ profile_data.username }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ profile_data.email }}" readonly>
+      </div>
+      <!-- <button type="submit">Save Changes</button> -->
+      <button><a href="{% url 'home' %}">Go Back</a></button> <!-- Link to the home page -->
+  </div>
+
+  <!-- <script src="script.js"></script> Link to your JavaScript file -->
+</body>
+</html>

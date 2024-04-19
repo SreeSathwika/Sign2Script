@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home | Sign2Script</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'logo.png' %}">
+        <link rel="stylesheet" href="{% static 'home.css' %}">
+        <script src="{% static 'profile.css' %}"></script>
+    </head>    
+<body>
+
+
+    <div class="main">
+        <nav>
+            <div>    
+                <div class="name">
+                    <img src="{% static 'logo.png' %}" alt="Logo" class="logo">
+                    Sign2Script
+                </div> 
+            </div>
+            <img src="{% static 'images/user.png' %}" class="user-pic" onclick="toggleMenu()"> 
+            <!-- <button class="contact">CONTACT US</button> -->
+            <div class="sub-menu-wrap" id="sub-menu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="{% static 'images/user.png' %}" alt="">
+                        <h2>{{ user.username }}</h2>
+                    </div>                    
+                    <hr>
+
+                    <a href="{% url 'profile' %}" class="sub-menu-link">
+                        <img src="{% static 'images/profile.png' %}" alt="">
+                        <p>View profile</p>
+                        <span>></span>
+                    </a>
+                    
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="{% static 'images/help.png' %}" alt="">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+
+                    <a href="{% url 'logout' %}" class="sub-menu-link">
+                        <img src="{% static 'images/logout.png' %}" alt="">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+
+                </div>
+            </div>
+        </nav>   
+        <div class="name2"> A Sign Language Interpreter</div>
+        <section class="services">
+            <div class="service">
+                <div class="icon2"><img src="{% static 'img2.png' %}" alt="img2" style="width:80%"></div>
+                <h3>Learning</h3>
+                <p>Learn American Sign Language</p>
+            </div>
+            <a href="{% url 'interpreter' %}" class="service">
+                <div class="icon1"><img src="{% static 'img1.png' %}" alt="img1" style="width:100%"></div>
+                <h3>Interpreter</h3>
+                <p>Interact with our ASL Interpreter</p>
+            </a>
+            <div class="service">
+                <div class="icon3"><img src="{% static 'img3.png' %}" alt="img3" style="width:60%"></div>
+                <h3>Transcripts</h3>
+                <p>History and Profile</p>
+            </div>
+        </section>
+    </div>
+    <script>
+        let subMenu=document.getElementById("sub-menu");
+
+        function toggleMenu(){
+            subMenu.classList.toggle("open-menu");
+        }
+    </script>
+</body>
+</html>
