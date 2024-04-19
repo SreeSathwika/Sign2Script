@@ -98,52 +98,54 @@ form.sign-in-form {
   color: white;
   margin-bottom: 10px;
 }
+
 .input-field {
-    max-width: 380px;
-    width: 100%;
-    background-color: #f0f0f0;
-    margin: 10px 0;
-    height: 50px;
-    border-radius: 55px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    position: relative;
-  }
-  
-  .input-field i {
-    margin-right: 10px;
-    color: #acacac;
-  }
-  
-  .input-field input {
-    flex: 1;
-    background: none;
-    outline: none;
-    border: none;
-    line-height: 1;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #333;
-  }
-  
-  .input-field input::placeholder {
-    color: #aaa;
-    font-weight: 500;
-  }
-  
-  .hidden-label {
-    display: none;
-  }
-  .visually-hidden {
-    position: absolute !important;
-    clip: rect(1px, 1px, 1px, 1px);
-    padding: 0 !important;
-    border: 0 !important;
-    height: 1px !important;
-    width: 1px !important;
-    overflow: hidden;
-    white-space: nowrap;
+  max-width: 380px;
+  width: 100%;
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  height: 50px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  padding: 0 0.4rem;
+  position: relative;
+}
+
+.input-field i {
+  text-align: center;
+  line-height: 55px;
+  color: #acacac;
+  transition: 0.5s;
+  font-size: 1.1rem;
+}
+
+.input-field input {
+  background: none;
+  outline: none;
+  border: none;
+  line-height: 1;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.input-field input::placeholder {
+  color: #aaa;
+  font-weight: 500;
+}
+.hidden-label {
+  display: none;
+}
+.visually-hidden {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 
@@ -268,6 +270,7 @@ form.sign-in-form {
 .container.sign-up-mode .left-panel {
   pointer-events: none;
 }
+
 
 .container.sign-up-mode .right-panel {
   pointer-events: all;
@@ -402,104 +405,73 @@ form.sign-in-form {
     left: 50%;
   }
 }
+.error-message {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+  border-radius: 10px;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
     </style>
   </head>
   <body>
     <div class="container">
-       
-    
       <div class="forms-container">
         <div class="signin-signup">
-            {% with messages = get_flashed_messages() %}
+         
+  
+          
+          <form action="/" method="post" class="sign-in-form">
+            {% csrf_token %}
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text"  id="username" name="username" placeholder="Username" Required/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" name="password" placeholder="Password" Required/>
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
             {% if messages %}
-                <div class="alert alert-danger">
-                    <ul>
-                        {% for message in messages %}
-                        <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% endwith %}
-            <form action="/" method="POST" class="sign-in-form">
-                {{ form.hidden_tag() }}
-                <h2 class="title">Sign in</h2>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    {{ form.email(class="form-control", placeholder="Email") }}
-                    <label for="email" class="hidden-label visually-hidden">{{ form.email.label }}</label>
-                    {% if form.email.errors %}
-                        <ul>
-                            {% for error in form.email.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                
-                
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    {{ form.password(class="form-control", placeholder="Password") }}
-                    <label for="password" class="hidden-label visually-hidden">{{ form.password.label }}</label>
-                    {% if form.password.errors %}
-                        <ul>
-                            {% for error in form.password.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                
-                {{ form.submit(class="btn btn-dark mt-4") }}
-            </form>
+            <div class="error-message">
+       {% for message in messages %}
+           {{ message }}
+       {% endfor %}
+           </div>
+         {% endif %}
             
-            
-            
-            <form action="/register" method="POST" class="sign-up-form">
-            {{ form.hidden_tag() }}
+          </form>
+          <form action="/register/"  method="post"class="sign-up-form">
+            {% csrf_token %}
             <h2 class="title">Sign up</h2>
             <div class="input-field">
-                <i class="fas fa-user"></i>
-                {{ form.name(class="form-control", placeholder="Username", id="name") }}
-                <label for="name" class="hidden-label visually-hidden">{{ form.name.label }}</label>
-                {% if form.name.errors %}
-                    <ul>
-                        {% for error in form.name.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+              <i class="fas fa-user"></i>
+              <input type="text"   id="username" name="username" placeholder="Username" />
             </div>
             <div class="input-field">
-                <i class="fas fa-user"></i>
-                {{ form.email(class="form-control", placeholder="Email") }}
-                <label for="email" class="hidden-label">{{ form.email.label }}</label>
-                {% if form.email.errors %}
-                    <ul>
-                        {% for error in form.email.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+              <i class="fas fa-envelope"></i>
+              <input type="email"  id="email" name="email"placeholder="Email" />
             </div>
-            
             <div class="input-field">
                 <i class="fas fa-lock"></i>
-                {{ form.password(class="form-control", placeholder="Password") }}
-                <label for="password" class="hidden-label">{{ form.password.label }}</label>
-                {% if form.password.errors %}
-                    <ul>
-                        {% for error in form.password.errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-            
-            {{ form.submit(class="btn btn-dark mt-4") }}
-        </form>
-        
+                <input type="password" id="password" name="password" placeholder="Create Password" />
+              </div>
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" />
+              </div>
+            <input type="submit" class="btn" value="Sign up" />
+            {% if messages %}
+            <div class="error-message">
+       {% for message in messages %}
+           {{ message }}
+       {% endfor %}
+           </div>
+         {% endif %}
+          </form>
         </div>
       </div>
 
@@ -528,6 +500,7 @@ form.sign-in-form {
           </div>
           <img src="" class="image" alt="" />
         </div>
+        
       </div>
     </div>
 
