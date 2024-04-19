@@ -84,6 +84,11 @@
 <body>
     <div id="content">
         <h1>American Sign Language Converter</h1>
+        {% if user %}
+    <p>Welcome {{ user.username }}! Communicate visually and effortlessly</p>
+        {% endif %}
+
+
 
         <div id="video-container">
             <img id="video-feed" src="{% url 'video_feed' %}" alt="ASL Video Feed">
