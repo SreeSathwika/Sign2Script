@@ -10,6 +10,7 @@ With Sign2Script, communication barriers are broken down, promoting inclusivity 
 - [Installation](#installation)
 - [Project Structure](#project-structure)
 - [Navigating through the project](#navigating-through-the-project)
+- [Authors](#authors)
 
 ## Requirements
 - Python 3.x
