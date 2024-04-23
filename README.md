@@ -7,7 +7,7 @@ With Sign2Script, communication barriers are broken down, promoting inclusivity 
 
 
 ## Table of Contents
-- [Requirements](##requirements)
+- [Requirements](##Requirements)
 - [Installation](##installation)
 ## Requirements
 - Python 3.x
