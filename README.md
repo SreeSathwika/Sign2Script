@@ -7,8 +7,9 @@ With Sign2Script, communication barriers are broken down, promoting inclusivity 
 
 
 ## Table of Contents
-- [Requirements](##Requirements)
-- [Installation](##installation)
+- [Requirements](#requirements)
+- [Installation](#installation)
+
 ## Requirements
 - Python 3.x
 - OpenCV (cv2)
