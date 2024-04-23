@@ -27,5 +27,4 @@ __Install Project Dependencies:__
 - Run the following command to install the required Python libraries from the provided __requirements.txt__ file:
 ```
 pip install -r requirements.txt
-
 ```
