@@ -50,7 +50,6 @@ Visit http://127.0.0.1:8000/ in your web browser to access the extension locally
 - ```App/templates```:HTML templates for rendering the web page.
 - ```inference_classifier.py```: Module containing the GestureClassifier class for performing gesture recognition.
 
-_
 ## Navigating through the project
 
  __```scripts/01_collect_imgs.py```__
@@ -148,3 +147,12 @@ __Notes__
 - The Django application captures frames from the webcam using OpenCV, performs gesture recognition using the GestureClassifier class, and streams the processed frames to the web page.
 - Ensure proper permissions for accessing the webcam.
 - Adjust the URL (http://127.0.0.1:8000/) according to your Django application settings.
+
+  ## Authors
+- [Sathwika](https://github.com/SreeSathwika)
+- [Siya](https://github.com/arorasiya008)
+- [Satya](https://github.com/kuval-2004)
+- [Ritika](https://github.com/ritzz912)
+- [Geethika](https://github.com/GeethikaVangapandu)
+- [Tamanna](https://github.com/TamannaRao)
+- [Najma](https://github.com/najma-mousavi)
