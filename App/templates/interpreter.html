@@ -26,8 +26,7 @@
 
         h1 {
             font-family: system-ui;
-            color: #171717;
-            color:white;
+            color: black;
             font-size: 36px;
             margin-top : 0;
             margin-bottom: 2px;
@@ -88,16 +87,14 @@
     <div id="content">
         <h1>American Sign Language Converter</h1>
         {% if user %}
-    <p>Welcome {{ user.username }}! Communicate visually and effortlessly</p>
-        {% endif %}
+        <p>Welcome {{ user.username }}! Communicate visually and effortlessly</p>
+            {% endif %}
 
+            <div id="video-container">
+                <img id="video-feed" src="{% url 'video_feed' %}" alt="ASL Video Feed">
+            </div>
 
-
-        <div id="video-container">
-            <img id="video-feed" src="{% url 'video_feed' %}" alt="ASL Video Feed">
         </div>
-
-    </div>
     <button class="btn"><i class="fa fa-home"> Home</i></button>
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -79,10 +79,12 @@ a{
 
 .services {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
     padding: 60px;
-    margin:auto;
+    margin: auto; /* Horizontally center the container */
 }
+
 
 .service {
     text-align: center;
@@ -98,6 +100,7 @@ a{
     margin: 0 auto 20px;
     cursor: pointer;
     border: 10px solid orange;
+    margin-left:-20px;
 }
 
 .icon2 {
@@ -109,6 +112,7 @@ a{
     padding-top: 10px;
     cursor: pointer;
     border: 10px solid rgb(38, 170, 222);
+    
 }
 
 .icon3 {
@@ -248,4 +252,3 @@ nav{
 .sub-menu-link:hover p{
     font-weight:600;
 }
-

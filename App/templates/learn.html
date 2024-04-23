@@ -31,7 +31,7 @@
         }
 
         .video-list {
-            max-width: 600px;
+            max-width: 1000px;
             margin: 13vh auto;
             padding: 20px;
             background-color: #444;
@@ -42,7 +42,7 @@
         .video {
             position: relative;
             width: 100%;
-            padding-bottom: 42.1875%; 
+            padding-bottom: 56.25%; 
             margin-bottom: 10%;
         }
 
@@ -56,8 +56,14 @@
 
         h3 {
             color: white;
+            font-family: 'Garamond', Serif;
             font-size: 1.2rem;
             margin-top: 10px;
+            padding-bottom: 20px;
+            text-align: center; 
+            margin-left: auto; 
+            margin-right: auto; 
+            display: block; 
         }
 
         p {
@@ -136,7 +142,7 @@
           Sign2Script
         </div>
         <h1>Learning Thru Videos</h1>
-        <img src="../static/home.jpg" alt="" class="home">
+        <a href="{% url 'home' %}"><img src="../static/home.jpg" alt="" class="home"></a>
       </header>
     <main>
         <section class="video-list">
@@ -202,13 +208,5 @@
                 <iframe src="https://www.youtube.com/embed/uP9qw2Oc0Rc?si=di-9SC1bnMIDPpqk" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"  allowfullscreen></iframe>
 
             </article>
-
-            
-
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Learning Page</p>
-    </footer>
 </body>
 </html>

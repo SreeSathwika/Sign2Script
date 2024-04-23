@@ -120,36 +120,19 @@
           Sign2Script
         </div>
         <h1>My Transcripts</h1>
-        <img src="../static/home.jpg" alt="" class="home">
+        <a href="{% url 'home' %}"><img src="../static/home.jpg" alt="" class="home"></a>
       </header>
-        <div class="container" id="container">
-            <div class="form-group" id="part">
-              <label for="TranscriptName" >Transcript Name : Timestamp</label>
-              <textarea name="transcript" id="" cols="70" rows="2" ></textarea>
-            </div>
+      <div class="container" id="container">
+        <!-- Iterate over user transcripts -->
+        {% for transcript in user_transcripts %}
+        <div class="form-group">
+            <label for="TranscriptName">{{ transcript.title }} : {{ transcript.timestamp }}</label>
+            <textarea name="transcript" cols="70" rows="2" readonly>{{ transcript.transcript }}</textarea>
         </div>
-        <script>
-          const data=[
-            {
-              heading:'Transcript Name : Timestamp'
-            },
-            {
-              heading:'Transcript Name : Timestamp'
-            }
-          ]
-          const postContainer = document.getElementById('container');
-          const postMethods = ()=>{
-            data.map((postData)=>{
-              const postElement = document.createElement('div');
-              postElement.classList.add('form-group')
-              postElement.innerHTML = `
-              <label for="TranscriptName" >Transcript Name : Timestamp</label>
-              <textarea name="transcript" id="" cols="70" rows="2" ></textarea>
-             `
-             postContainer.appendChild(postElement)
-            })
-          }
-          postMethods()
-        </script>
+        {% endfor %}
+    </div>
+      
+      
+    
 </body>
 </html>

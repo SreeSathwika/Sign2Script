@@ -9,4 +9,7 @@ urlpatterns = [
     path('profile/', views.view_profile, name='profile'),
     path('logout', views.logout_user, name='logout'),
     path('learn', views.learn, name='learn'),
+    path('transcripts', views.transcripts, name='transcripts'),
+    path('transcript', views.transcript, name='transcript'),
+    path('video_feed', views.video_feed_stream, name='video_feed'),
 ] 

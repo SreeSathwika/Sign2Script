@@ -2,14 +2,14 @@ from django.shortcuts import render,redirect
 from django.http import StreamingHttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate,login ,logout
+from django.contrib.auth import authenticate,logout
 from django.db import IntegrityError
 from django.contrib.auth import login as auth_login  # Rename to avoid conflicts
 from django.contrib.auth.decorators import login_required
+from django.urls import resolve
+from .models import Transcript
+
 from scripts.inference_classifier import GestureClassifier
-from . forms import CreateUserForm, LoginForm
-from django.contrib.sessions.models import Session
-from django.contrib.sessions.backends.db import SessionStore
 import cv2
 import pyttsx3
 from django.contrib.messages import get_messages
@@ -69,6 +69,7 @@ def register(request):
     stored_messages = get_messages(request)
     return render(request, 'login.html', {'messages': stored_messages})
 
+@login_required
 def home(request):
     if request.user.is_authenticated:
         user = request.user
@@ -78,7 +79,8 @@ def home(request):
         return render(request, 'home.html',context)
     else:
        return redirect('login')
-    
+
+@login_required  
 def logout_user(request):
     logout(request)
     request.session.flush()  # Clear session data
@@ -97,10 +99,21 @@ def view_profile(request):
     # Render the profile.html template with the profile data
     return render(request, 'profile.html', {'profile_data': profile_data})
 
+@login_required
 def learn(request):
     return render(request, 'learn.html')
 
-    
+@login_required
+def transcripts(request):
+    user_transcripts = Transcript.objects.filter(user=request.user)
+    context = {
+        'user_transcripts': user_transcripts
+    }
+    return render(request, 'transcripts.html', context)
+
+def transcript(request):
+    return render(request, 'transcript.html')
+
 def text_to_speech(text):
     # Initialize the Text-to-Speech engine
     engine = pyttsx3.init()
@@ -122,9 +135,9 @@ def generate_frames():
         # Perform gesture classification using your GestureClassifier
         predicted_text, frame = gesture_classifier.predict(frame)
 
-        ''' Convert text to speech
-        if predicted_text is not None:
-            text_to_speech(predicted_text)'''
+        #Convert text to speech
+        #if predicted_text is not None:
+            #text_to_speech(predicted_text)
 
         # Convert the frame to JPEG format
         ret, jpeg = cv2.imencode(".jpg", frame)
@@ -137,11 +150,14 @@ def generate_frames():
         )
 
 def video_feed(request):
-    if request.user.is_authenticated and request.path == '/interpreter/':
-        # If the user is logged in and in the interpreter view, return the video feed
-        return StreamingHttpResponse(
-            generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame"
-        )
-    else:
-        # If the user is not in the interpreter view or not logged in, redirect to the home page or any other page
-        return redirect('home')  # Redirect to home page or any other page
+    # Render the 'interpreter.html' template along with the streaming video feed
+    return render(request, 'interpreter.html', {'streaming_url': '/video_feed_stream/'})
+
+def video_feed_stream(request):
+    # Generate the streaming video frames
+    return StreamingHttpResponse(
+        generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame"
+    )
+
+
+    

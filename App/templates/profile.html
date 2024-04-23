@@ -6,7 +6,149 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
-  <link rel="stylesheet" href="{% static 'profile.css' %}"> <!-- Link to your CSS file -->
+  <style>
+    body{
+      /* display:flex;
+      align-items:center;
+      justify-content:center; */
+      background-color: #323131;
+      font-family:'Times New Roman',serif;
+      overflow:hidden;
+      color:white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position:fixed;
+      width:100%;
+      z-index:1000;
+      top:0;
+      left:0;
+      background-color:black; 
+      /* color:white;*/
+      /* color:black; */
+      height:60px;
+      width:100%;
+    }
+    a {
+    text-decoration: none;
+    text-decoration: none;
+    font-family: "Silkscreen", sans-serif;
+    color: black;
+    font-size: 20px;
+    }
+    .name {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    font-family: "Lucida Handwriting", Cursive;
+    display: flex;
+    align-items: center;
+    color:white;
+    margin-left:30px;
+    }
+
+    .logo {
+    width: 7%;
+    padding-right: 7px;
+    }
+
+    h1{
+    position:absolute;
+    left:42vw;
+    font-family: 'Garamond', Serif;
+    color:white
+    }
+    .home{
+    width:50px;
+    height:45px;
+    border-radius:50%;
+    cursor:pointer;
+    margin-left:30px;
+    margin-right:30px;
+    display:inline-block;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 20vh auto;
+      padding: 20px;
+      /* border: 1px solid #ccc; */
+      border-radius: 5px;
+      padding-right:35px;
+      background-color: #323131;
+      color:white;
+    }
+
+    .container h2{
+      text-align:center;
+      font-family:'Lucida Handwriting',cursive;
+      font-weight:bold;
+      font-size:40px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-family:'Times New Roman',serif;
+      font-size:20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family:'Times New Roman',serif;
+      font-size:17px;
+    }
+
+    button {
+      background-color: #66FCF1;
+      font-family:"Silkscreen",sans-serif;
+      color: black;
+      border:1px solid #45A29E;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      padding: 10px 20px;
+      margin-left:110px;
+      margin-top:25px;
+      width:50%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    img{
+      display:inline-block;
+    }
+
+    h2{
+      display:inline-block;
+      position:relative;
+      top:-40px;
+      left:10px;
+    }
+    a{
+      text-decoration: none;
+      font-family:"Silkscreen",sans-serif;
+      color: black;
+      font-size:20px;
+    }
+    a:hover{
+      color:white;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -15,7 +157,7 @@
       Sign2Script
     </div>
     <!-- <h1>My Profile</h1> -->
-    <img src="../static/home.jpg" alt="" class="home">
+    <a href="{% url 'home' %}"><img src="../static/home.jpg" alt="" class="home"></a>
   </header>
   <div class="container">
     <img src="images/user.png" alt="">
@@ -28,8 +170,6 @@
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" value="{{ profile_data.email }}" readonly>
       </div>
-      <!-- <button type="submit">Save Changes</button> -->
-      <button><a href="{% url 'home' %}">Go Back</a></button> <!-- Link to the home page -->
   </div>
 
   <!-- <script src="script.js"></script> Link to your JavaScript file -->

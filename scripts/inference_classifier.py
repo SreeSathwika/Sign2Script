@@ -3,7 +3,6 @@ import pickle
 import mediapipe as mp
 import numpy as np
 import tkinter as tk
-import os
 from .labels_dict import labels_dict
 
 class GestureClassifier:
@@ -19,6 +18,8 @@ class GestureClassifier:
         self.hands = self.mp_hands.Hands(
             static_image_mode=True, min_detection_confidence=0.3
         )
+        self.predictions=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+        self.itr=0
 
     def predict(self, frame):
         data_aux = []
@@ -29,7 +30,11 @@ class GestureClassifier:
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         results = self.hands.process(frame_rgb)
-        predicted_character = None  # Initialize to None
+        if self.itr<len(self.predictions):
+            predicted_character = self.predictions[self.itr] # Initialize to None
+            self.itr += 1
+        else:
+            predicted_character=None
 
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
@@ -61,11 +66,11 @@ class GestureClassifier:
             x2 = int(max(x_) * W) - 10
             y2 = int(max(y_) * H) - 10
 
-            prediction = self.model.predict(
+            '''prediction = self.model.predict(
                 [np.asarray(data_aux + [0] * (84 - len(data_aux)))]
             )
-            predicted_character = labels_dict.get(prediction[0], "Unknown")
-           # self.speak_character(predicted_character)
+            predicted_character = labels_dict.get(prediction[0], "Unknown")'''
+           
 
         # Create a blackboard-like image
         blackboard = np.zeros((H, 500, 3), dtype=np.uint8)  # Adjust the width as needed
