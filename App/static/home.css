@@ -12,6 +12,10 @@
     background-color: #1E242C;
 }
 
+a{
+    text-decoration:none;
+}
+
 
 
 /* header {
@@ -144,14 +148,17 @@ nav{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    position:relative;
+    position:fixed;
+    height:60px;
 }
 
 .user-pic{
-    width:60px;
+    width:50px;
+    height:45px;
     border-radius:50%;
     cursor:pointer;
     margin-left:30px;
+    margin-right:30px;
     display:inline-block;
 }
 
