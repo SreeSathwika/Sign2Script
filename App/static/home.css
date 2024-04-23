@@ -97,10 +97,10 @@ a{
     height: 200px;
     background-color: orange;
     border-radius: 50%;
-    margin: 0 auto 20px;
+    margin:20px 40px;
     cursor: pointer;
     border: 10px solid orange;
-    margin-left:-20px;
+    /* margin-left:-20px; */
 }
 
 .icon2 {
