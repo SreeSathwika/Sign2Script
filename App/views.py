@@ -14,11 +14,6 @@ import cv2
 import pyttsx3
 from django.contrib.messages import get_messages
 
-gesture_classifier = GestureClassifier()
-camera = cv2.VideoCapture(0)
-
-
-
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -126,14 +121,32 @@ def text_to_speech(text):
     engine.say(text)
     engine.runAndWait()
 
-def generate_frames():
+def generate_frames(request):
+    gesture_classifier = GestureClassifier()
+    camera = cv2.VideoCapture(0)
+    record_transcript = False
+    transcript = ''
     while True:
         success, frame = camera.read()
         if not success:
             break
 
+        if not request.path == '/video_feed/':
+            camera.release()
+            break
+
+        if request.method == 'POST':
+            if 'start_button' in request.POST:
+                record_transcript |= True
+            elif 'stop_button' in request.POST:
+                record_transcript &= False
+
         # Perform gesture classification using your GestureClassifier
         predicted_text, frame = gesture_classifier.predict(frame)
+
+        if not predicted_text == "None" and record_transcript is True:
+            trancript += predicted_text
+            transcript += ' ' 
 
         #Convert text to speech
         #if predicted_text is not None:
@@ -148,16 +161,20 @@ def generate_frames():
             b"--frame\r\n"
             b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n\r\n"
         )
+    
+    if not transcript == '':
+        transcript_object = Transcript.objects.create(user=request.user, title = "Transcript", transcript = transcript )
+
+def interpreter(request):
+    # Call the video_feed view to get the streaming video feed
+    streaming_content = video_feed(request)
+    # Render the 'interpreter.html' template and pass the streaming content
+    return render(request, 'interpreter.html', {'streaming_content': streaming_content})
 
 def video_feed(request):
-    # Render the 'interpreter.html' template along with the streaming video feed
-    return render(request, 'interpreter.html', {'streaming_url': '/video_feed_stream/'})
-
-def video_feed_stream(request):
     # Generate the streaming video frames
-    return StreamingHttpResponse(
-        generate_frames(), content_type="multipart/x-mixed-replace; boundary=frame"
-    )
+    streaming_content = generate_frames(request)
+    return StreamingHttpResponse(streaming_content, content_type="multipart/x-mixed-replace; boundary=frame")
 
 
     
