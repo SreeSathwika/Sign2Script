@@ -30,8 +30,11 @@ class GestureClassifier:
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         results = self.hands.process(frame_rgb)
-        if self.itr<len(self.predictions):
-            predicted_character = self.predictions[self.itr] # Initialize to None
+        add = False
+        if self.itr<30*len(self.predictions):
+            if self.itr%30 == 0:
+                add = True
+            predicted_character = self.predictions[int(self.itr/30)] # Initialize to None
             self.itr += 1
         else:
             predicted_character=None
@@ -83,7 +86,7 @@ class GestureClassifier:
         # Combine the frame and blackboard side by side
         combined_frame = np.hstack((frame, blackboard))
 
-        return predicted_character, combined_frame
+        return add, predicted_character, combined_frame
 
   #  def speak_character(self, predicted_text):
         #tts = gTTS(text=predicted_text, lang='en')

@@ -14,6 +14,9 @@ import cv2
 import pyttsx3
 from django.contrib.messages import get_messages
 
+record_transcript = False
+transcript = ""
+
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -106,9 +109,6 @@ def transcripts(request):
     }
     return render(request, 'transcripts.html', context)
 
-def transcript(request):
-    return render(request, 'transcript.html')
-
 def text_to_speech(text):
     # Initialize the Text-to-Speech engine
     engine = pyttsx3.init()
@@ -122,10 +122,9 @@ def text_to_speech(text):
     engine.runAndWait()
 
 def generate_frames(request):
+    global transcript
     gesture_classifier = GestureClassifier()
     camera = cv2.VideoCapture(0)
-    record_transcript = False
-    transcript = ''
     while True:
         success, frame = camera.read()
         if not success:
@@ -135,17 +134,11 @@ def generate_frames(request):
             camera.release()
             break
 
-        if request.method == 'POST':
-            if 'start_button' in request.POST:
-                record_transcript |= True
-            elif 'stop_button' in request.POST:
-                record_transcript &= False
-
         # Perform gesture classification using your GestureClassifier
-        predicted_text, frame = gesture_classifier.predict(frame)
+        add, predicted_text, frame = gesture_classifier.predict(frame)
 
-        if not predicted_text == "None" and record_transcript is True:
-            trancript += predicted_text
+        if not predicted_text == "None" and record_transcript is True and add is True:
+            transcript += predicted_text
             transcript += ' ' 
 
         #Convert text to speech
@@ -162,19 +155,31 @@ def generate_frames(request):
             b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n\r\n"
         )
     
-    if not transcript == '':
-        transcript_object = Transcript.objects.create(user=request.user, title = "Transcript", transcript = transcript )
-
-def interpreter(request):
-    # Call the video_feed view to get the streaming video feed
-    streaming_content = video_feed(request)
-    # Render the 'interpreter.html' template and pass the streaming content
-    return render(request, 'interpreter.html', {'streaming_content': streaming_content})
 
 def video_feed(request):
     # Generate the streaming video frames
     streaming_content = generate_frames(request)
     return StreamingHttpResponse(streaming_content, content_type="multipart/x-mixed-replace; boundary=frame")
+
+def interpreter(request):
+    global record_transcript, transcript
+    if request.method == 'POST':
+        post_data = request.POST
+        if 'start_button' in post_data:
+            record_transcript = True
+        elif 'stop_button' in post_data:
+            record_transcript = False
+            if not transcript == "":
+                transcripts_len = len(Transcript.objects.filter(user=request.user))
+                title = "Transcript" + str(transcripts_len + 1)
+                transcript_object = Transcript.objects.create(user=request.user, title = title, transcript = transcript )
+                transcript = ""
+    print(record_transcript)
+    # Call the video_feed view to get the streaming video feed
+    streaming_content = video_feed(request)
+    # Render the 'interpreter.html' template and pass the streaming content
+    return render(request, 'interpreter.html', {'streaming_content': streaming_content})
+
 
 
     
