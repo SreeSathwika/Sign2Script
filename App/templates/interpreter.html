@@ -189,8 +189,32 @@
 
         </div>
     <!-- Include jQuery library -->
-    <button class="btn1">Start</button>
-    <button class="btn2">Stop</button>
+    <form id ="start_form" method="POST" >
+        {% csrf_token %}
+        <button type="submit" name="start_button" class="btn1">Start</button>
+    </form>
+    <form id = "stop_form" method="POST" >
+        {% csrf_token %}
+        <button type="submit" name="stop_button" class="btn2">Stop</button>
+    </form>
+    <script>
+        // JavaScript code to handle form submission without reloading the page
+        document.getElementById("start_form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            fetch(window.location.href, {  // Send a POST request to the current URL
+                method: "POST",
+                body: new FormData(this)
+            })
+        });
+    
+        document.getElementById("stop_form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            fetch(window.location.href, {  // Send a POST request to the current URL
+                method: "POST",
+                body: new FormData(this)
+            })
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
