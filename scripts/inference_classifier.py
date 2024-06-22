@@ -18,8 +18,6 @@ class GestureClassifier:
         self.hands = self.mp_hands.Hands(
             static_image_mode=True, min_detection_confidence=0.3
         )
-        self.predictions=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-        self.itr=0
 
     def predict(self, frame):
         data_aux = []
@@ -31,13 +29,7 @@ class GestureClassifier:
 
         results = self.hands.process(frame_rgb)
         add = False
-        if self.itr<30*len(self.predictions):
-            if self.itr%30 == 0:
-                add = True
-            predicted_character = self.predictions[int(self.itr/30)] # Initialize to None
-            self.itr += 1
-        else:
-            predicted_character=None
+        predicted_character=None
 
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
@@ -69,10 +61,10 @@ class GestureClassifier:
             x2 = int(max(x_) * W) - 10
             y2 = int(max(y_) * H) - 10
 
-            '''prediction = self.model.predict(
+            prediction = self.model.predict(
                 [np.asarray(data_aux + [0] * (84 - len(data_aux)))]
             )
-            predicted_character = labels_dict.get(prediction[0], "Unknown")'''
+            predicted_character = labels_dict.get(prediction[0], "Unknown")
            
 
         # Create a blackboard-like image
